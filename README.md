@@ -61,7 +61,54 @@ eaglewood-prayer-beads/
 └── docs/                           # README 截图
 ```
 
-## 快速开始
+## 使用方式
+
+### 安装
+
+下载 WorkBuddy [https://www.codebuddy.cn/events/invite?inviteCode=acjtmw4jtix2rv](https://www.codebuddy.cn/events/invite?inviteCode=acjtmw4jtix2rv)
+
+> 编写和测试用的都是腾讯的 WorkBuddy，其他像扣子、openClaw、Claude Code 应该也能用。
+
+```
+# 克隆到 WorkBuddy 技能目录
+git clone https://github.com/sya1985/eaglewood-prayer-beads.git ~/.workbuddy/skills/eaglewood-prayer-beads/
+```
+
+或手动下载后放入 `~/.workbuddy/skills/eaglewood-prayer-beads/`。
+
+### 使用
+
+在 WorkBuddy 对话中 `@skill:eaglewood-prayer-beads`，附上手串照片 + 参数描述：
+
+```
+@skill:eaglewood-prayer-beads 柬埔寨菩萨棋 11.5cm×19粒 11.2克 5000元
+```
+
+参数尽量给齐（给的数字默认按真实数据处理）：
+
+| 参数 | 必需 | 说明 |
+| --- | --- | --- |
+| 照片 | ✅ 至少 1 张 | 有微距图处理痕迹识别可升级 |
+| 克重 | 建议 | 缺了无法算密度，只出图像结论 |
+| 珠径 / 颗数 | 建议 | 缺珠径标「待确认」，按区间给 |
+| 产地 / 品类 | 可选 | 缺了标「产区待确认」，只少专项溢价不降档 |
+| 商家定价 | 可选 | 给了才出「值不值」的价格结论 |
+
+更多示例：
+
+```
+@skill:eaglewood-prayer-beads 马老奇沉香手串 9mm 20颗 6克 5000元
+@skill:eaglewood-prayer-beads 奇楠树丁单圈 43颗 12.6克 1188元（附三张照片）
+```
+
+### 输出
+
+每次速判生成：
+
+1. `沉香速判-<编号>.html` — 图文速判卡片：八维观察项（状态灯）+ 密度反算 + 参照带 + 价格结论 + 材质 verdict + 待确认清单
+2. 对话内结论摘要 — 材质判断（回避 / 不建议碰 / 证据强度）与价格判断（值得争取 / 不构成买贵 / 超上限）
+
+## 开发者用法（CLI）
 
 密度反算（圆珠）：
 
