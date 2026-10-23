@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PAGE_TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Design tokens — Botanical / Organic Serif
+   ============================================================ */
+:root{
+  /* Earthbound palette */
+  --bg:#F9F8F4;            /* 暖米白 / 宣纸 */
+  --fg:#2D3A31;            /* 深林绿，正文 */
+  --sage:#8C9A84;          /* 鼠尾草绿，主色 */
+  --clay:#DCCFC2;          /* 软陶土 / 菌伞色 */
+  --stone:#E6E2DA;         /* 石灰，极轻边框 */
+  --terracotta:#C27B66;    /* 赤陶，强调 / hover */
+  --paper:#F2F0EB;         /* 浅纸色，卡片内衬 */
+
+  /* Semantic（沿用同一自然色系，不引入高饱和色） */
+  --good:#4C8038;
+  --warn:#C08A3E;
+  --bad:#A9503C;
+
+  /* Soft diffused shadows */
+  --shadow-sm:0 4px 6px -1px rgba(45,58,49,.05);
+  --shadow-md:0 10px 15px -3px rgba(45,58,49,.05);
+  --shadow-lg:0 20px 40px -10px rgba(45,58,49,.05);
+  --shadow-xl:0 25px 50px -12px rgba(45,58,49,.15);
+
+  --r-card:24px;
+  --r-inner:18px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:"Source Sans 3","PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:16px;
+  line-height:1.72;
+  font-weight:400;
+  letter-spacing:.005em;
+  padding:clamp(28px,5vw,72px) clamp(16px,4vw,40px) clamp(48px,8vw,110px);
+}
+
+/* Paper grain —— 不可省的触感来源 */
+.grain{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.015;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+}
+
+.page{max-width:1080px;margin:0 auto;}
+
+/* ============================================================
+   Page header
+   ============================================================ */
+.page-head{margin-bottom:clamp(30px,5vw,60px);}
+.eyebrow{
+  display:block;
+  font-size:11.5px;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--sage);
+  margin:0 0 14px;
+}
+.page-title{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(34px,6vw,62px);
+  font-weight:600;
+  line-height:1.12;
+  letter-spacing:-.015em;
+  margin:0 0 16px;
+}
+.page-title em{font-style:italic;color:var(--terracotta);font-weight:500;}
+.page-meta{
+  margin:0;color:#6E7A6C;font-size:14.5px;font-weight:300;max-width:64ch;
+}
+
+/* 藤蔓分隔线 */
+.vine{display:block;width:100%;height:26px;margin:clamp(26px,4vw,44px) 0;}
+.vine path{fill:none;stroke:var(--clay);stroke-width:1;}
+
+/* ============================================================
+   Specimen card
+   ============================================================ */
+.specimens{display:flex;flex-direction:column;gap:clamp(28px,4vw,52px);}
+
+.specimen{
+  position:relative;
+  background:#fff;
+  border:1px solid var(--stone);
+  border-radius:var(--r-card);
+  padding:clamp(22px,3.4vw,42px);
+  box-shadow:var(--shadow-md);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+  animation:rise .7s var(--ease) both;
+}
+.specimen:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);}
+@keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){
+  .specimen{animation:none;}
+  .frame img{transition:none;}
+}
+
+/* 顶部：编号 + 标签 */
+.specimen-top{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-bottom:clamp(10px,1.6vw,16px);
+}
+.code{
+  font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:#7C8779;
+}
+
+/* 标签 */
+.tag{
+  display:inline-block;
+  font-size:11.5px;font-weight:600;letter-spacing:.05em;
+  padding:5px 13px;border-radius:999px;
+  white-space:nowrap;
+}
+.tag--good{background:rgba(76,128,56,.15);color:#3E662C;}
+.tag--warn{background:rgba(192,138,62,.15);color:#8A6224;}
+.tag--bad{background:rgba(169,80,60,.13);color:#8E3F2E;}
+.tag--neutral{background:rgba(140,154,132,.13);color:#6B7767;}
+
+/* 名称（可选内联序号 + 名称正文） */
+.specimen-name{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(25px,3.6vw,38px);
+  font-weight:600;line-height:1.24;letter-spacing:-.012em;
+  margin:0 0 clamp(20px,3vw,30px);
+}
+.specimen-name em{font-style:italic;font-weight:500;color:var(--terracotta);}
+.name-seq{
+  font-size:.6em;font-style:italic;font-weight:500;
+  color:var(--clay);letter-spacing:.04em;white-space:nowrap;
+}
+.name-seq::after{content:"·";margin:0 .45em;color:var(--stone);font-style:normal;}
+
+/* ============================================================
+   Gallery（正方形）
+   ============================================================ */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:clamp(10px,1.6vw,20px);
+  margin-bottom:clamp(24px,3.4vw,38px);
+}
+.frame{margin:0;position:relative;}
+.frame--square{
+  border-radius:var(--r-inner);
+  overflow:hidden;
+  background:var(--paper);
+  aspect-ratio:1/1;
+  cursor:zoom-in;
+  box-shadow:var(--shadow-sm);
+}
+.frame--square img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .7s var(--ease);
+}
+.specimen:hover .frame--square img,
+.frame--square:hover img{transform:scale(1.045);}
+.frame figcaption{
+  margin-top:9px;
+  font-size:11.5px;font-weight:500;letter-spacing:.06em;
+  color:#8A9486;text-align:center;
+}
+
+/* ============================================================
+   Facts（八维）
+   ============================================================ */
+.facts{margin:0;display:block;}
+.fact{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:clamp(12px,2vw,26px);
+  padding:14px 0;
+  border-bottom:1px solid var(--stone);
+}
+.fact:first-child{padding-top:0;}
+.fact:last-of-type{border-bottom:none;padding-bottom:0;}
+.fact dt{
+  font-size:12px;font-weight:600;letter-spacing:.06em;
+  color:#7C8779;padding-top:3px;
+  display:flex;align-items:baseline;gap:7px;
+}
+.fact dd{
+  margin:0;font-size:14.8px;line-height:1.72;font-weight:400;
+}
+.fact dd b{font-weight:600;color:#243026;}
+.fact dd em{font-style:italic;font-family:"Playfair Display",serif;font-size:1.06em;}
+.fact .note{
+  display:block;margin-top:5px;
+  font-size:12.8px;font-weight:300;color:#7C8779;line-height:1.6;
+}
+
+/* 状态灯 */
+.dot{
+  width:7px;height:7px;border-radius:50%;flex:none;
+  display:inline-block;position:relative;top:-1px;
+}
+.dot--good{background:var(--good);}
+.dot--warn{background:var(--warn);}
+.dot--bad{background:var(--bad);}
+.dot--neutral{background:#B9C1B4;}
+
+/* ============================================================
+   Valuation
+   ============================================================ */
+.valuation{
+  margin-top:clamp(24px,3.4vw,36px);
+  background:var(--paper);
+  border-radius:var(--r-inner);
+  padding:clamp(18px,2.6vw,28px);
+}
+.valuation-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;margin-bottom:6px;
+}
+.valuation-head .eyebrow{margin:0;color:var(--sage);}
+.limit{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(22px,3.2vw,30px);
+  font-weight:600;line-height:1.15;letter-spacing:-.01em;
+}
+.limit em{font-style:italic;}
+.valuation-note{
+  margin:0 0 16px;font-size:12.8px;font-weight:300;color:#7C8779;line-height:1.62;
+}
+/* 商家定价／成交价核对（仅有该输入时渲染）
+   依赖成交价的结论（值得争取 / 买得值 / 价格合理 / 超上限）写在这里，不写进 verdict */
+.price-check{
+  --pc:var(--sage);
+  margin:0 0 16px;padding:14px 0 0;
+  border-top:1px solid var(--stone);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+.pc--good{--pc:var(--good);}
+.pc--warn{--pc:var(--warn);}
+.pc--bad{--pc:var(--bad);}
+.pc--neutral{--pc:var(--sage);}
+.price-check .pc-label{
+  font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9A8467;
+}
+.price-check .pc-value{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(16px,2.2vw,20px);font-weight:600;line-height:1.2;color:var(--pc);
+}
+.price-check .pc-verdict{
+  flex-basis:100%;margin:8px 0 0;
+  font-size:13.6px;line-height:1.7;
+  border-left:3px solid var(--pc);padding-left:14px;
+}
+.price-check .pc-verdict b{font-weight:600;color:#243026;}
+.verdict{
+  border-left:3px solid var(--sage);
+  padding:2px 0 2px 16px;
+  font-size:14.6px;line-height:1.78;
+}
+.verdict b{font-weight:600;color:#243026;}
+.verdict--good{border-left-color:var(--good);}
+.verdict--warn{border-left-color:var(--warn);}
+.verdict--bad{border-left-color:var(--bad);}
+.verdict br{content:"";display:block;margin-bottom:7px;}
+
+/* ============================================================
+   Unknowns（不确定信息）
+   ============================================================ */
+.unknowns{
+  margin-top:20px;
+  border:1px dashed var(--clay);
+  border-radius:var(--r-inner);
+  padding:16px 20px;
+  background:rgba(220,207,194,.14);
+}
+.unknowns h3{
+  margin:0 0 8px;
+  font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:#9A8467;
+}
+.unknowns ul{margin:0;padding-left:18px;}
+.unknowns li{font-size:13.2px;font-weight:300;color:#6E7A6C;line-height:1.68;}
+.unknowns li b{font-weight:600;color:#55604F;}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.page-foot{
+  margin-top:clamp(40px,6vw,76px);
+  padding-top:26px;
+  border-top:1px solid var(--stone);
+  font-size:12.8px;font-weight:300;color:#8A9486;line-height:1.8;
+}
+.page-foot b{font-weight:600;color:#6E7A6C;}
+.page-foot .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px;}
+.page-foot .legend span{display:inline-flex;align-items:center;gap:7px;}
+
+/* ============================================================
+   Lightbox
+   ============================================================ */
+.lb{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(28,35,29,.94);
+  display:none;align-items:center;justify-content:center;
+  padding:40px 20px;cursor:zoom-out;
+}
+.lb.on{display:flex;}
+.lb img{
+  max-width:100%;max-height:calc(100vh - 120px);
+  border-radius:10px;box-shadow:var(--shadow-xl);
+}
+.lb-bar{
+  position:absolute;bottom:22px;left:0;right:0;text-align:center;
+  color:#D8DCD4;font-size:12.5px;font-weight:300;letter-spacing:.05em;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width:620px){
+  body{font-size:15.5px;}
+  .specimen{border-radius:20px;}
+  .fact{grid-template-columns:1fr;gap:4px;}
+  .fact dt{padding-top:0;}
+  .gallery{grid-template-columns:repeat(2,1fr);}
+  .gallery .frame:first-child{grid-column:1 / -1;}
+  .valuation-head{flex-direction:column;align-items:flex-start;gap:2px;}
+}
+@media (max-width:420px){
+  .gallery{grid-template-columns:1fr;}
+  .gallery .frame:first-child{grid-column:auto;}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="page">
+
+  <header class="page-head">
+    <span class="eyebrow">{{HEAD_EYEBROW}}</span>
+    <h1 class="page-title">{{HEAD_TITLE}}</h1>
+    <p class="page-meta">{{HEAD_META}}</p>
+  </header>
+
+  <svg class="vine" viewBox="0 0 1080 26" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 13 C 130 -6, 250 32, 380 13 S 630 -6, 760 13 S 990 32, 1080 13"></path>
+  </svg>
+
+  <section class="specimens">
+{{SPECIMENS}}
+  </section>
+
+  <footer class="page-foot">
+    <div class="legend">
+      <span><i class="dot dot--good"></i>证据充分 / 价格合理</span>
+      <span><i class="dot dot--warn"></i>存在疑点，待补证据</span>
+      <span><i class="dot dot--bad"></i>可靠识别的硬伤</span>
+      <span><i class="dot dot--neutral"></i>中性事实 / 按判据执行，不加分不减分</span>
+    </div>
+    <p>
+      <b>图片只排序疑点，不能定性造假 —— 材质真假须 CMA 检测（含乙醇提取物 ≥10%）+ 常温冷水沉水实测。</b>
+    </p>
+  </footer>
+
+</main>
+
+<div class="lb" id="lb"><img alt="放大查看"><div class="lb-bar" id="lbBar"></div></div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), img=lb.querySelector('img'), bar=document.getElementById('lbBar');
+  document.querySelectorAll('.frame--square').forEach(function(f){
+    f.addEventListener('click',function(){
+      var i=f.querySelector('img'); if(!i) return;
+      img.src=i.dataset.full||i.src;
+      var cap=f.querySelector('figcaption');
+      bar.textContent=(i.alt||'')+(cap?' · '+cap.textContent:'');
+      lb.classList.add('on');
+    });
+  });
+  lb.addEventListener('click',function(){ lb.classList.remove('on'); img.src=''; });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&lb.classList.contains('on')){ lb.classList.remove('on'); img.src=''; }
+  });
+})();
+</script>
+</body>
+</html>

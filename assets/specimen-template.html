@@ -1,0 +1,41 @@
+<!-- ============================================================
+     单串标本卡片 · 骨架
+     Botanical / Organic Serif 设计系统
+     占位符由 scripts/build_card.py 填充，形如「双花括号 + 大写键名」
+     ============================================================ -->
+<article class="specimen" style="animation-delay:{{DELAY}}ms">
+
+  <!-- 顶部：编号 + 标签（不再有独立序号徽章） -->
+  <div class="specimen-top">
+    <span class="code">{{CODE}}</span>
+    <span class="tag tag--{{TAG_TONE}}">{{TAG}}</span>
+  </div>
+
+  <!-- 名称（序号仅在描述自带时才拼进标题，用 span.name-seq；不自带则纯标题） -->
+  <h2 class="specimen-name">{{NAME}}</h2>
+
+  <!-- 图集（正方形） -->
+  <div class="gallery">
+    {{GALLERY}}
+  </div>
+
+  <!-- 八维事实表：第一行承载 颗数 + 珠径 + 形状 -->
+  <dl class="facts">
+    {{FACTS}}
+  </dl>
+
+  <!-- 估值区间：上限区间 / 折算式 / 成交价核对 / 材质结论 -->
+  <div class="valuation">
+    <div class="valuation-head">
+      <span class="eyebrow">估值区间</span>
+      <span class="limit">{{LIMIT_AMOUNT}}</span>
+    </div>
+    <p class="valuation-note">{{LIMIT_NOTE}}</p>
+    {{PRICE_CHECK}}
+    <div class="verdict verdict--{{VERDICT_TONE}}">{{VERDICT}}</div>
+  </div>
+
+  <!-- 待确认信息（不确定的不写进结论，只列在这里） -->
+  {{UNKNOWNS}}
+
+</article>

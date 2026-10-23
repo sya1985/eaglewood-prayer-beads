@@ -1,0 +1,12 @@
+# Python 运行时产物
+__pycache__/
+*.pyc
+
+# 卡片产物（运行时生成，不入库）
+outputs/
+
+# 工作副本私有目录
+.workbuddy/
+
+# 打包产物
+*.zip
